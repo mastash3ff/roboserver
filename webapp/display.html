@@ -1,0 +1,213 @@
+<!doctype html>
+<html xmlns:ng="http://angularjs.org">
+  <head>
+    <link href="display/bootstrap.css" rel="stylesheet">
+    <link href="display/bootstrap-theme.css" rel="stylesheet">
+    <style type="text/css">
+      #map {
+             height:750px;
+             width:750px;
+      }
+      
+      .container {
+        display: flex;
+        justify-content: space-around;
+        align-items: stretch;
+      }
+
+      #columnleft {
+        float: left;
+        width: 300px;
+      }
+
+      #columnright {
+        float: left;
+        width: 300px;
+        padding-right: 0px; padding-left: 50px
+      }
+
+      #columnmiddle {
+        float: left;
+        width: 300px;
+        padding-right: 0px; padding-left: 50px
+      }
+    </style>
+  </head>
+  <body>
+    
+
+    <div ng-app="control">
+      <nav ng-controller="TimeCtrl" class="navbar navbar-inverse">
+        <div class="container-fluid">
+          <div class="navbar-header"></div><a class="navbar-brand" href="#">2019 RoboBoat - Course Display</a>
+          <div class="navbar-right"><a href="#">Last Update: {{lastUpdate()}}</a></div>
+        </div>
+      </nav>
+    
+      <div class="container" ng-controller="Status" style="width: 1400px;">
+
+
+          <div id="columnleft" class="jumbotron" style="padding-right: 0px; padding-left: 50px">
+          <div class="row">
+            <h2>Course A</h2>
+          </div>
+          <div class="row">
+            <h6>Run information</h6>
+            <ul>
+              <li>Team: {{status.courseA.teamCode}}
+              <li>Challenge: {{status.courseA.currentChallenge}}
+              <li>Heartbeat: <span ng-show="status.courseA.lastHeartbeat">{{epochToDate(status.courseA.lastHeartbeat)}}</span>
+            </ul>
+          </div>
+          <div class="row">
+            <h6>Obstacle Avoidance</h6>
+            <ul>
+              <li>Requested code: {{status.courseA.requestedGateCode}}
+              <li ng-show="status.courseA.requestedGateCode">Gate code: {{status.courseA.assignedGateCode.gateCode}}
+              <li ng-hide="status.courseA.requestedGateCode">Gate code: **hidden**
+            </ul>
+          </div>
+          <div class="row">
+            <h6>Automated Docking</h6>
+            <ul>
+              <li>Requested seq: {{status.courseA.requestedDockingSequence}}
+              <li ng-show="status.courseA.requestedDockingSequence">Dock sequence: <ol><li ng-repeat="bay in status.courseA.dockingSequence.dockingBaySequence" style="color: {{bay.color}}">{{bay.symbol}}-{{bay.color}}</ol>
+              <li ng-hide="status.courseA.requestedDockingSequence">Dock sequence: **hidden**
+            </ul>
+          </div>
+          <div class="row">
+            <h6>Pinger Location</h6>
+            <ul>
+              <li>Reported pinger: <span style="color: {{status.courseA.reportedPinger}}">{{status.courseA.reportedPinger}}</span>
+              <li ng-show="status.courseA.reportedPinger">Active pinger: <span style="color: {{status.courseA.activePinger}}">{{status.courseA.activePinger}}</span>
+              <li ng-hide="status.courseA.reportedPinger">Active pinger: **hidden**
+            </ul>
+          </div>
+          <div class="row">
+            <h6>Raise the Flag</h6>
+            <ul>
+              <li>Reported Flag: {{status.courseA.reportedFlag}}
+              <li ng-show="status.courseA.reportedFlag">Active flag: {{status.courseA.activeFlag}}
+              <li ng-hide="status.courseA.reportedFlag">Active flag: **hidden**
+            </ul>
+          </div>
+        </div>
+                <!-- Course B -->
+        <div id="columnmiddle" class="jumbotron" style="padding-right: 0px; padding-left: 50px">
+          <div class="row">
+            <h2>Course B</h2>
+            <button id="bravoButton" type="button" class="btn btn-danger">Offline</button>
+          </div>
+          <div class="row">
+            <h6>Run information</h6>
+            <ul>
+              <li>Team: {{status.courseB.teamCode}}
+              <li>Challenge: {{status.courseB.currentChallenge}}
+              <li>Heartbeat: <span ng-show="status.courseB.lastHeartbeat">{{epochToDate(status.courseB.lastHeartbeat)}}</span>
+            </ul>
+          </div>
+          <div class="row">
+            <h6>Obstacle Avoidance</h6>
+            <ul>
+              <li>Requested code: {{status.courseB.requestedGateCode}}
+              <li ng-show="status.courseB.requestedGateCode">Gate code: {{status.courseB.assignedGateCode.gateCode}}
+              <li ng-hide="status.courseB.requestedGateCode">Gate code: **hidden**
+            </ul>
+          </div>
+          <div class="row">
+            <h6>Automated Docking</h6>
+            <ul>
+              <li>Requested seq: {{status.courseB.requestedDockingSequence}}
+              <li ng-show="status.courseB.requestedDockingSequence">Dock sequence: <ol><li ng-repeat="bay in status.courseB.dockingSequence.dockingBaySequence" style="color: {{bay.color}}">{{bay.symbol}}-{{bay.color}}</ol>
+              <li ng-hide="status.courseB.requestedDockingSequence">Dock sequence: **hidden**
+            </ul>
+          </div>
+          <div class="row">
+            <h6>Pinger Location</h6>
+            <ul>
+              <li>Reported pinger: <span style="color: {{status.courseB.reportedPinger}}">{{status.courseB.reportedPinger}}</span>
+              <li ng-show="status.courseB.reportedPinger">Active pinger: <span style="color: {{status.courseB.activePinger}}">{{status.courseB.activePinger}}</span>
+              <li ng-hide="status.courseB.reportedPinger">Active pinger: **hidden**
+            </ul>
+          </div>
+          <div class="row">
+            <h6>Interop</h6>
+            <h6>Raise the Flag</h6>
+            <ul>
+              <li>Reported Flag: {{status.courseB.reportedFlag}}
+              <li ng-show="status.courseB.reportedFlag">Active flag: {{status.courseB.activeFlag}}
+              <li ng-hide="status.courseB.reportedFlag">Active flag: **hidden**
+            </ul>
+          </div>
+        </div>
+        
+       <!-- <div class="column center" ng-controller="MapCtrl">
+          <div id="map"></div>
+          <div id="class" ng-repeat="marker in markers | orderBy : 'title'">
+             <a href="#" ng-click="openInfoWindow($event, marker)">{{marker.title}}</a>
+          </div>
+        </div>-->
+
+          <div id="columnright" class="jumbotron" style="padding-right: 0px; padding-left: 50px">
+          <div class="row">
+            <h2>Course C</h2>
+          </div>
+          <div class="row">
+            <h6>Run information</h6>
+            <ul>
+              <li>Team: {{status.courseC.teamCode}}
+              <li>Challenge: {{status.courseC.currentChallenge}}
+              <li>Heartbeat: <span ng-show="status.courseC.lastHeartbeat">{{epochToDate(status.courseC.lastHeartbeat)}}</span>
+            </ul>
+          </div>
+          <div class="row">
+            <h6>Obstacle Avoidance</h6>
+            <ul>
+              <li>Requested code: {{status.courseC.requestedGateCode}}
+              <li ng-show="status.courseC.requestedGateCode">Gate code: {{status.courseC.assignedGateCode.gateCode}}
+              <li ng-hide="status.courseC.requestedGateCode">Gate code: **hidden**
+            </ul>
+          </div>
+          <div class="row">
+            <h6>Automated Docking</h6>
+            <ul>
+              <li>Requested seq: {{status.courseC.requestedDockingSequence}}
+              <li ng-show="status.courseC.requestedDockingSequence">Dock sequence: <ol><li ng-repeat="bay in status.courseC.dockingSequence.dockingBaySequence" style="color: {{bay.color}}">{{bay.symbol}}-{{bay.color}}</ol>
+              <li ng-hide="status.courseC.requestedDockingSequence">Dock sequence: **hidden**
+            </ul>
+          </div>
+          <div class="row">
+            <h6>Pinger Location</h6>
+            <ul>
+              <li>Reported pinger: <span style="color: {{status.courseC.reportedPinger}}">{{status.courseC.reportedPinger}}</span>
+              <li ng-show="status.courseC.reportedPinger">Active pinger: <span style="color: {{status.courseC.activePinger}}">{{status.courseC.activePinger}}</span>
+              <li ng-hide="status.courseC.reportedPinger">Active pinger: **hidden**
+            </ul>
+          </div>
+          <div class="row">
+            <h6>Raise the Flag</h6>
+            <ul>
+              <li>Reported Flag: {{status.courseC.reportedFlag}}
+              <li ng-show="status.courseC.reportedFlag">Active flag: {{status.courseC.activeFlag}}
+              <li ng-hide="status.courseC.reportedFlag">Active flag: **hidden**
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9JAolnW7Wepz0hYoP3rAmRMfhFAK-w68"></script>-->
+    <script type="text/javascript" src="display/angular.js"></script>
+    <script type="text/javascript" src="display/angular-cookies.js"></script>
+    <script type="text/javascript" src="display/angular-route.js"></script>
+    <script type="text/javascript" src="display/ui-bootstrap-tpls-0.13.0.min.js"></script>
+    <script type="text/javascript" src="display/judging.js"></script>
+    <script type="text/javascript" src="display/controllers.js"></script>
+    <script type="text/javascript" src="display/scores.js"></script>
+  </body>
+</html>
+
+      
+
+

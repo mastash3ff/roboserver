@@ -7,6 +7,7 @@ install_require = [
     'nmeaserver>=0.1.10',
     'pycodestyle',
     'pytz',
+    'flask-cors',
 ]
 
 tests_require = [

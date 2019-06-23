@@ -1,0 +1,74 @@
+<!doctype html>
+<html xmlns:ng="http://angularjs.org">
+  <head>
+    <link href="eventviewer/bootstrap.css" rel="stylesheet">
+  </head>
+  <body>
+    <h2>2019 RoboBoat control panel</h2>
+    
+    <div ng-app="control">
+    <div class="container" ng-controller="Teams">
+<!--       <p>There are {{teams.length}} teams:</p> -->
+      <!-- Example row of columns -->
+      <div class="row">      
+        <div class="col-md-4" ng-repeat="course in courses">
+          <h2>{{course.name}}</h2>
+          
+          <div class="row">
+            <div class="btn-group" dropdown is-open="status.isopen">
+              <button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">
+                Change team in the water <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li ng-repeat="team in teams"><a ng-click="newTeamInWater(course, team); $scope.status.isopen=false">{{team}}</a></li>
+              </ul>
+            </div>
+            Team selected: {{course.teamInWater}}
+          </div> <!-- Team selection -->
+
+          <div class="row">
+            <button type="button" class="btn {{course.newRunButtonClass}}" ng-click="newRun(course, course.teamInWater)">Start run</button>
+            <button type="button" class="btn {{course.endRunButtonClass}}" ng-click="endRun(course, course.teamInWater)">End run</button>
+          </div> <!-- New run -->
+          
+          <div class="row">
+            <div ng-hide="course.hideDebug">
+              {{course.runSetup}}
+            </div>
+            <button type="button" class="btn btn-default" ng-click="hideDebug(course)">{{course.showText}} debug info</button>
+          </div> <!-- Debug -->
+          
+          <div class="row">
+            <h4>List of events</h4>
+            
+            
+            <accordion close-others="oneAtATime">
+              <accordion-group heading="{{run.team}} {{run.runId}} ({{run.start}})" is-open="course.expandedEvents[run.start]" ng-repeat="run in course.events">
+                <div ng-repeat="event in run.events">
+                  {{event.time}}: {{event.message}}
+                </div>
+              </accordion-group>
+            </accordion>
+
+          </div><!-- Logs -->
+        </div>
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>RoboBoat 2019</p>
+      </footer>
+    </div> <!-- /container -->
+    
+    <script type="text/javascript" src="eventviewer/angular.js"></script>
+    <script type="text/javascript" src="eventviewer/angular-cookies.js"></script>
+    <script type="text/javascript" src="eventviewer/angular-route.js"></script>
+    <script type="text/javascript" src="eventviewer/ui-bootstrap-tpls-0.11.0.js"></script>
+    <script type="text/javascript" src="eventviewer/eventviewer.js"></script>
+  </body>
+</html>
+
+      
+
+
