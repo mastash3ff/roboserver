@@ -136,10 +136,10 @@ class Team():
         with self.team_lock:
             tmp = self.__dict__
         try:
-            del dict["team_lock"]
+            del tmp["team_lock"]
         except KeyError:
             logger.debug("Key 'team_lock' not found")
-        return dict
+        return tmp
 
 @nmeaserver.context_creator()
 def onConnectionEstablished(context):
@@ -157,7 +157,7 @@ def onEveryMessageBeforeHandler(context, raw_message):
 
         if message['sentence_id'] == 'RBHRB':
             team.name = message['data'][6]
-        elif message['sentence'] == 'RBDOK' or message['sentence'] == 'RBFLG':
+        elif message['sentence_id'] == 'RBDOK' or message['sentence_id'] == 'RBFLG':
             team.name = message['data'][2]
         else:
             logger.debug("Received unknown sentence_id in onEveryMessageBeforeHandler()")
